@@ -10,6 +10,7 @@
         <?php foreach($listProduct as $key=>$product): ?>
             <li><?php echo $product['name'];?></li>
             <?php endforeach ?>
+            <!-- dd -->
     </ul>
 </body>
 </html>
