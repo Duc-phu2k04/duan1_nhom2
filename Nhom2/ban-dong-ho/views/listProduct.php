@@ -11,5 +11,6 @@
             <li><?php echo $product['name'];?></li>
             <?php endforeach ?>
     </ul>
+    <!-- a -->
 </body>
 </html>
