@@ -20,7 +20,7 @@ class HomeController
         $listProduct = $this->modelSanPham->getAllProduct();
         // var_dump($listProduct);die();
         require_once './views/listProduct.php';
-        // var_dump("abc");
-        // var_dump("ok");
+// var_dump("ok");
+      
     }
 }
