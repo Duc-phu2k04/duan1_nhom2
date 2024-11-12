@@ -11,7 +11,7 @@
             <li><?php echo $product['name'];?></li>
             <?php endforeach ?>
             <!-- dd -->
-            <!-- dd -->
+          
     </ul>
 </body>
 </html>
