@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 10, 2024 at 12:26 PM
+-- Generation Time: Nov 12, 2024 at 01:04 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -68,8 +68,9 @@ CREATE TABLE `danhmuc` (
 --
 
 INSERT INTO `danhmuc` (`id`, `tendanhmuc`, `mota`) VALUES
-(1, 'ĐỒNG HỒ NAM', 'Khám phá bộ sưu tập đồng hồ Rolex nam, kết hợp giữa sự mạnh mẽ và đẳng cấp'),
-(2, 'ĐỒNG HỒ NỮ', 'Bộ sưu tập đồng hồ Rolex nữ mang đến sự thanh lịch và sang trọng vượt thời gian');
+(1, 'ĐỒNG HỒ NAM', 'Khám phá bộ sưu tập đồng hồ Rolex nam, kết hợp giữa sự mạnh mẽ và đẳng cấp, thu hút người nhìn'),
+(4, 'ĐỒNG HỒ NỮ', 'Khám phá bộ sưu tập đồng hồ Rolex nữ, kết hợp giữa sự quyến rũ và nhẹ nhàng, làm tăng sự tự tin hơn'),
+(5, 'ĐỒNG HỒ NỮ', 'siêu đẹp');
 
 -- --------------------------------------------------------
 
@@ -159,6 +160,14 @@ CREATE TABLE `sanpham` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+-- Dumping data for table `sanpham`
+--
+
+INSERT INTO `sanpham` (`id`, `name`, `anh`, `soluong`, `gia`, `mau`, `mauma`, `kichco`, `chatlieu`, `mota`, `category_id`) VALUES
+(1, 'BIG BANG 465.OS.1118.VR.1704.MXM18 SANG BLEU 39', '', 20, '30000000.00', 'Vàng kim', '', '39mm', 'Dây đeo da', 'Đồng hồ sang trọng và lịch sự phù hợp cho các quý ông đi sự kiện', 1),
+(2, 'CITIZEN CA7008-11E', '', 15, '38000000.00', 'Đen ', '0002', '35mm', 'Mạ vàng ', 'Sản phẩm đẹp và sang trọng', 1);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -240,7 +249,7 @@ ALTER TABLE `danhgia`
 -- AUTO_INCREMENT for table `danhmuc`
 --
 ALTER TABLE `danhmuc`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `donhang`
@@ -270,7 +279,7 @@ ALTER TABLE `nguoidung`
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
