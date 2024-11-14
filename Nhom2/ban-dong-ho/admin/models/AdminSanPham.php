@@ -48,4 +48,24 @@ class AdminSanPham{
         }
     }
 
+    public function updateSanPham($name, $gia, $soluong, $mau, $kichco, $chatlieu, $ngaynhap, $category_id, $trangthai, $mota, $anh){
+    try {
+        $sql = 'UPDATE sanpham (name,gia,soluong,mau,kichco,chatlieu,ngaynhap,category_id,trangthai,mota,anh)
+        SET name = :name,
+            gia = :gia,
+            soluong = :soluong,
+            mau = :mau,
+            kichco = :kichco,
+            chatlieu = :chatlieu,
+            ngaynhap = :ngaynhap,
+            category = :category,
+            trangthai = :trangthai,
+            mota = :mota,
+            anh = :anh,
+            WHERE id = :id';
+       
+    } catch (\Throwable $th) {
+        //throw $th;
+    }
+    }
 }
