@@ -10,6 +10,10 @@
         <?php foreach($listProduct as $key=>$product): ?>
             <li><?php echo $product['name'];?></li>
             <?php endforeach ?>
+            <!-- dd -->
+          <!-- jjfnjfn -->
+            <!-- dd -->
+          <!-- jjfnjfn -->
     </ul>
 </body>
 </html>
