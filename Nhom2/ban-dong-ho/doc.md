@@ -17,3 +17,5 @@ năm sinh:2005..... -->
 
 
 - Cấu hình DB trong file commons/env.php
+7. LƯU Ý : ALTER TABLE nguoidung
+MODIFY COLUMN vaitro INT DEFAULT 0;
