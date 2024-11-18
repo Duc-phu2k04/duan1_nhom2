@@ -58,6 +58,9 @@
                             <a href="index.php?act=addsp" class="nav-link">Sản phẩm</a>
                         </li>
                         <li class="nav-item">
+                            <a href="index.php?act=listdh" class="nav-link">Đơn hàng</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="index.php?act=list_user" class="nav-link">Danh sách người dùng</a>
                         </li>
                     </ul>

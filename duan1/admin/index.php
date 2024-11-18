@@ -89,6 +89,125 @@ if (isset($_GET['act'])) {
                 }
             }
             break;
+        case 'listdh':
+            // Lấy danh sách đơn hàng từ cơ sở dữ liệu
+            $sql = "SELECT * FROM orders";
+            try {
+                $orders = pdo_query($sql); // Lấy tất cả đơn hàng
+                if (!$orders) {
+                    $orders = []; // Nếu không có đơn hàng nào, gán mảng rỗng
+                }
+            } catch (Exception $e) {
+                echo "Lỗi: " . $e->getMessage();
+                $orders = []; // Gán mảng rỗng nếu có lỗi
+            }
+
+            include "donhang/list.php";
+            break;
+
+        case 'add_order':
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $user_id = $_POST['user_id'];
+                $order_date = $_POST['order_date'];
+                $status = $_POST['status'];
+                $total_amount = $_POST['total_amount'];
+                $payment_method = $_POST['payment_method'];
+                $shipping_address = $_POST['shipping_address'];
+
+                // Câu lệnh INSERT để thêm đơn hàng vào cơ sở dữ liệu
+                $sql = "INSERT INTO orders (user_id, order_date, status, total_amount, payment_method, shipping_address, created_at, updated_at) 
+                            VALUES (:user_id, :order_date, :status, :total_amount, :payment_method, :shipping_address, NOW(), NOW())";
+
+                try {
+                    pdo_execute($sql, [
+                        ':user_id' => $user_id,
+                        ':order_date' => $order_date,
+                        ':status' => $status,
+                        ':total_amount' => $total_amount,
+                        ':payment_method' => $payment_method,
+                        ':shipping_address' => $shipping_address
+                    ]);
+                    echo "<script>alert('Đơn hàng đã được thêm thành công!'); window.location = 'index.php';</script>";
+                } catch (Exception $e) {
+                    echo "Lỗi: " . $e->getMessage();
+                }
+            }
+            break;
+
+            // Sửa đơn hàng
+            case 'edit_order':  // Chỉnh sửa đơn hàng
+                if (isset($_GET['id'])) {
+                    $id = $_GET['id'];  // Lấy id đơn hàng từ URL
+            
+                    // Lấy thông tin đơn hàng từ cơ sở dữ liệu
+                    $sql = "SELECT * FROM orders WHERE id = :id";
+                    try {
+                        $order = pdo_query_one($sql, [':id' => $id]);
+                        if (!$order) {
+                            echo "Đơn hàng không tồn tại.";
+                            exit;
+                        }
+                    } catch (Exception $e) {
+                        echo "Lỗi: " . $e->getMessage();
+                        exit;
+                    }
+            
+                    // Nếu form được gửi, thực hiện cập nhật
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        $status = $_POST['status'];
+                        $payment_method = $_POST['payment_method'];
+                        $shipping_address = $_POST['shipping_address'];
+            
+                        // Kiểm tra giá trị của status
+                        $valid_statuses = ['Pending', 'Shipped', 'Delivered', 'Cancelled'];
+                        if (!in_array($status, $valid_statuses)) {
+                            echo "<script>alert('Trạng thái không hợp lệ!');</script>";
+                            exit;
+                        }
+            
+                        // Kiểm tra giá trị của payment_method
+                        $valid_payment_methods = ['Credit Card', 'Paypal', 'Cash on Delivery', ''];
+                        if (!in_array($payment_method, $valid_payment_methods)) {
+                            echo "<script>alert('Phương thức thanh toán không hợp lệ!');</script>";
+                            exit;
+                        }
+            
+                        // Cập nhật thông tin đơn hàng trong cơ sở dữ liệu
+                        $sql = "UPDATE orders 
+                                SET status = :status, payment_method = :payment_method, shipping_address = :shipping_address, updated_at = NOW() 
+                                WHERE id = :id";
+                        try {
+                            pdo_execute($sql, [
+                                ':status' => $status,
+                                ':payment_method' => $payment_method,
+                                ':shipping_address' => $shipping_address,
+                                ':id' => $id
+                            ]);
+                            echo "<script>alert('Đơn hàng đã được cập nhật!'); window.location = 'index.php?act=listdh';</script>";
+                        } catch (Exception $e) {
+                            echo "Lỗi: " . $e->getMessage();
+                        }
+                    }
+            
+                    // Bao gồm trang form chỉnh sửa đơn hàng
+                    include "donhang/edit.php";
+                }
+                break;
+            
+
+            // Xóa đơn hàng
+        case 'delete_order':
+            if (isset($_GET['id'])) {
+                $id = $_GET['id'];
+                $sql = "DELETE FROM orders WHERE id = :id";
+                try {
+                    pdo_execute($sql, [':id' => $id]);
+                    echo "<script>alert('Đơn hàng đã được xóa thành công!'); window.location = 'index.php?act=listdh';</script>";
+                } catch (Exception $e) {
+                    echo "<script>alert('Lỗi: " . $e->getMessage() . "');</script>";
+                }
+            }
+            break;
 
         case 'addsp':
             // Logic để xử lý thêm sản phẩm
