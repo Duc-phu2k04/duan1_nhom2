@@ -132,41 +132,92 @@ session_start();
         <p class="text-center">Khám phá các sản phẩm nổi bật dưới đây:</p>
 
         <!-- Danh sách sản phẩm -->
-        <div class="row">
-            <!-- Thẻ sản phẩm 1 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Sản phẩm 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Sản phẩm 1</h5>
-                        <p class="card-text">Mô tả ngắn về sản phẩm.</p>
-                        <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Thẻ sản phẩm 2 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Sản phẩm 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Sản phẩm 2</h5>
-                        <p class="card-text">Mô tả ngắn về sản phẩm.</p>
-                        <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Thẻ sản phẩm 3 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Sản phẩm 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Sản phẩm 3</h5>
-                        <p class="card-text">Mô tả ngắn về sản phẩm.</p>
-                        <a href="#" class="btn btn-primary">Xem Chi Tiết</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php
+// Gọi file kết nối cơ sở dữ liệu
+require_once '../models/pdo.php'; // Đảm bảo đã kết nối thành công
+
+// Truy vấn danh sách sản phẩm từ cơ sở dữ liệu
+$sql = "SELECT id, name, anh, gia, mota FROM sanpham";
+try {
+    // Thực hiện truy vấn và lấy tất cả sản phẩm
+    $stmt = $pdo->query($sql);
+    $products = $stmt->fetchAll();
+} catch (PDOException $e) {
+    // Xử lý lỗi nếu có
+    $thongbao = "Lỗi khi lấy danh sách sản phẩm: " . $e->getMessage();
+}
+
+// Đảm bảo rằng bạn đã nhúng Bootstrap CSS trong phần head của HTML
+echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />';
+echo '<style>
+    /* Cố định chiều cao của thẻ card */
+    .product-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    /* Cố định chiều cao của ảnh và đảm bảo không bị lệch */
+    .product-card img {
+        height: 200px;
+        object-fit: cover;
+        overflow: hidden;
+    }
+    /* Cố định chiều cao của phần card-body để tất cả đều đồng đều */
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card-body h5, .card-body p {
+        margin: 0;
+    }
+    /* Đảm bảo nút xem chi tiết luôn ở dưới cùng */
+    .card-body a {
+        margin-top: auto;
+    }
+</style>';
+
+// Kiểm tra xem có sản phẩm nào để hiển thị không
+if (!empty($products)) {
+    echo "<div class='container my-4'>";
+    echo "<h2 class='text-center mb-4'>Danh Sách Sản Phẩm</h2>";
+    echo "<div class='row g-4'>"; // Mở thẻ div cho hàng sản phẩm với khoảng cách giữa các cột
+
+    // Duyệt qua danh sách sản phẩm
+    foreach ($products as $product) {
+        echo "<div class='col-md-3 col-sm-6'>"; // Đảm bảo có tối đa 4 sản phẩm trong mỗi hàng
+        echo "<div class='card shadow-sm border-light rounded product-card'>"; // Thêm lớp 'product-card'
+
+        // Ảnh sản phẩm có chiều cao đồng đều, không bị biến dạng
+        echo "<img src='" . htmlspecialchars($product['anh']) . "' alt='" . htmlspecialchars($product['name']) . "' class='card-img-top' />";
+        
+        echo "<div class='card-body'>";
+        echo "<h5 class='card-title'>" . htmlspecialchars($product['name']) . "</h5>";
+        echo "<p class='card-text'>Giá: <span class='fw-bold'>" . htmlspecialchars(number_format($product['gia'])) . " VND</span></p>";
+        echo "<p class='card-text'>" . htmlspecialchars($product['mota']) . "</p>";
+        echo "<a href='chitiet.php?id=" . $product['id'] . "' class='btn btn-primary w-100'>Xem chi tiết</a>"; // Nút xem chi tiết
+        echo "</div>"; // Đóng thẻ card-body
+        echo "</div>"; // Đóng thẻ card
+        echo "</div>"; // Đóng thẻ col
+    }
+
+    echo "</div>"; // Đóng thẻ row
+    echo "</div>"; // Đóng thẻ container
+} else {
+    echo "<p class='text-center text-danger'>Không có sản phẩm nào để hiển thị.</p>";
+}
+
+// Tùy chọn hiển thị thông báo lỗi nếu có
+if (isset($thongbao)) {
+    echo "<p class='text-danger text-center'>" . htmlspecialchars($thongbao) . "</p>";
+}
+
+echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>';
+?>
+
+
+
     </div>
 
     <!-- JavaScript Bootstrap -->
