@@ -1,5 +1,5 @@
 <?php
-require_once '../model/user_model.php';
+require_once '../models/user_model.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Đăng ký thành công, chuyển hướng và hiển thị thông báo
         echo "<script>
                 alert('Đăng ký thành công!'); 
-                window.location.href = '../view/login.php';
+                window.location.href = '../views/login.php';
               </script>";
         exit();
     } else {

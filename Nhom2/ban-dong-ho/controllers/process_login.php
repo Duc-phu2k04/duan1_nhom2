@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../model/user_model.php';
+require_once '../models/user_model.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Chuyển hướng và hiển thị thông báo đăng nhập thành công
         echo "<script>
                 alert('Đăng nhập thành công!');
-                window.location.href = '../view/home.php';
+                window.location.href = '../views/home.php';
               </script>";
         exit();
     } else {
